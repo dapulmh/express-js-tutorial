@@ -7,7 +7,15 @@ import { resolveIndexByUserId } from "../utils/middleware.mjs";
 const router = Router();
 
 router.get(`/api/users`,  query('filter').isString().withMessage('Must be not string').notEmpty().withMessage('Must be not empty').isLength({min:3, max:10}).withMessage("Must be 3 - 10 character"), (request, response) =>{
-
+    console.log(request.session.id);
+    request.sessionStore.get(request.session.id, (err, sessionData) => {
+        if(err) {
+            console.log(err);
+            throw err
+        }
+        console.log(sessionData);
+      
+    })
     const result = validationResult(request);
     console.log(result);
     const {query : {filter, value}} = request;
